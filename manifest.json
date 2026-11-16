@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "RGTube",
+  "version": "2.2.1",
+  "description": "YouTube'u daha akıcı ve pratik yapan sade panel: Zen Mod, Cleany Menu, Kanal Grupları, arka plan ve sayfa düzeni.",
+  "permissions": ["storage", "unlimitedStorage"],
+  "host_permissions": ["https://www.youtube.com/*"],
+  "action": {
+    "default_title": "RGTube ayarları",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": [
+        "shared/defaults.js",
+        "content/zen-css.js",
+        "content/content.js",
+        "content/lens.js"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}

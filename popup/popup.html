@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <title>RGTube</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="top">
+    <div class="brand">
+      <span class="logo" aria-hidden="true"><i></i><i></i><i></i></span>
+      <div>
+        <h1>RGTube</h1>
+        <p>YouTube'u kendine göre ayarla</p>
+      </div>
+    </div>
+    <label class="switch" title="RGTube'u aç/kapat">
+      <input type="checkbox" data-key="enabled" aria-label="RGTube etkin">
+      <span></span>
+    </label>
+  </header>
+
+  <main id="panel">
+    <section>
+      <label class="row">
+        <span class="txt">
+          <b>Zen Mod</b>
+          <small>Sade kenar çubuğu, sıkı akış, Zen izleme, açılır yorum paneli, immersive arama</small>
+        </span>
+        <span class="switch"><input type="checkbox" data-key="zen"><span></span></span>
+      </label>
+      <div data-dep="zen" class="stack">
+        <label class="chk"><input type="checkbox" data-key="zenSplit"> İzlerken video alanı ve öneri listesi ayrı kaysın</label>
+        <small>Fare öneri listesindeyken yalnızca liste, video/yorum alanındayken yalnızca o alan kayar. Tiyatro ve tam ekranda devreye girmez.</small>
+      </div>
+    </section>
+
+    <section>
+      <label class="row">
+        <span class="txt">
+          <b>Cleany Menu Modu</b>
+          <small>Ana sayfadaki videoları gizler, arama çubuğunu ekranın ortasına alır</small>
+        </span>
+        <span class="switch"><input type="checkbox" data-key="cleany"><span></span></span>
+      </label>
+      <div data-dep="cleany" class="stack">
+        <label class="chk"><input type="checkbox" data-key="cleanySubs"> Only videos from subscribed channels.</label>
+        <small>İşaretlenince arama çubuğu eski yerine döner ve ana sayfa yalnızca abone olduğun kanalların videolarını (Abonelikler akışı) gösterir. Kutucuk YouTube'da sol altta da görünür.</small>
+      </div>
+    </section>
+
+    <section>
+      <h2>Arka plan görseli</h2>
+      <div class="preview" id="preview">
+        <span id="previewEmpty">Görsel seçilmedi</span>
+      </div>
+      <div class="btns">
+        <label class="btn primary" for="file">Görsel yükle</label>
+        <input type="file" id="file" accept="image/*" hidden>
+        <button class="btn" id="removeImg" type="button">Kaldır</button>
+      </div>
+      <p class="note" id="imgNote"></p>
+      <div data-dep="hasImg">
+        <label class="row">
+          <span class="txt"><b>Yerleşim</b></span>
+          <select data-key="bgFit">
+            <option value="cover">Ekranı kapla</option>
+            <option value="contain">Sığdır</option>
+            <option value="center">Ortada, orijinal boyut</option>
+            <option value="repeat">Döşe</option>
+          </select>
+        </label>
+        <label class="row col">
+          <span class="line"><b>Bulanıklık</b><output data-out="bgBlur" data-unit=" px"></output></span>
+          <input type="range" min="0" max="40" step="1" data-key="bgBlur">
+        </label>
+        <label class="row col">
+          <span class="line"><b>Örtü</b><output data-out="bgDim" data-unit="%"></output></span>
+          <input type="range" min="0" max="90" step="1" data-key="bgDim">
+          <small>Yazıların okunması için görselin üstüne yarı saydam katman ekler.</small>
+        </label>
+      </div>
+    </section>
+
+    <section>
+      <h2>Renkler</h2>
+      <div class="row">
+        <label class="txt" for="bgColorOn"><b>Arka plan rengi</b><small>Görsel yoksa tüm sayfa bu renk olur</small></label>
+        <input type="color" data-key="bgColor" data-dim="bgColorOn" aria-label="Arka plan rengi">
+        <label class="switch"><input type="checkbox" id="bgColorOn" data-key="bgColorOn"><span></span></label>
+      </div>
+      <div class="row">
+        <label class="txt" for="bgGradOn"><b>Gradient</b><small>İkinci rengi seç, renk geçişi oluşsun</small></label>
+        <input type="color" data-key="bgColor2" data-dim="bgGradActive" aria-label="Arka plan ikinci renk">
+        <label class="switch"><input type="checkbox" id="bgGradOn" data-key="bgGradOn"><span></span></label>
+      </div>
+      <label class="row col" data-dep="bgGradActive">
+        <span class="line"><b>Gradient açısı</b><output data-out="bgGradAngle" data-unit="°"></output></span>
+        <input type="range" min="0" max="360" step="5" data-key="bgGradAngle">
+      </label>
+      <div class="row">
+        <label class="txt" for="textColorOn"><b>Yazı rengi</b></label>
+        <input type="color" data-key="textColor" data-dim="textColorOn" aria-label="Yazı rengi">
+        <label class="switch"><input type="checkbox" id="textColorOn" data-key="textColorOn"><span></span></label>
+      </div>
+    </section>
+
+    <section id="rgtube-lens-section">
+      <div class="rgg-head">
+        <div>
+          <h2>YT Lens <span class="rgg-pill">beta</span></h2>
+          <small>Görselle YouTube'da arama. Groq API anahtarını buraya gir; video üzerindeki 🔍 düğmesinden açılan panelde görseli seç.</small>
+        </div>
+      </div>
+      <div class="rgg-tools">
+        <input class="rgg-input rgtlens-key" id="rgtlens-key" type="password" placeholder="gsk_..." autocomplete="off" spellcheck="false" aria-label="Groq API anahtarı">
+        <button class="rgg-ic" id="rgtlens-eye" type="button" title="Göster/gizle">👁</button>
+        <button class="rgg-ic" id="rgtlens-clear" type="button" title="Anahtarı sil">×</button>
+      </div>
+      <p class="note" id="rgtlens-status"></p>
+      <p class="note">Anahtar bu tarayıcıda saklanır, koda gömülmez. <a href="https://console.groq.com/keys" target="_blank" rel="noopener">console.groq.com/keys</a> adresinden ücretsiz anahtar oluşturabilirsin.</p>
+    </section>
+
+    <section id="rgtube-bm-section">
+      <div class="rgg-head">
+        <div>
+          <h2>Yer İmleri <span class="rgg-pill" id="rgtbm-total">0</span></h2>
+          <small>Oynatıcıdaki kontrol çubuğunda, süre göstergesinin yanındaki <b>🔖</b> düğmesiyle o anı kaydet; buradan tek tıkla aynı saniyeye dön.</small>
+        </div>
+        <label class="switch" title="Video üzerindeki yer imi düğmesini göster">
+          <input type="checkbox" id="rgtbm-on" aria-label="Yer imi düğmesi">
+          <span></span>
+        </label>
+      </div>
+      <div class="rgg-tools">
+        <input class="rgg-input" id="rgtbm-search" placeholder="Video adında ara…" autocomplete="off">
+        <button class="rgg-ic rgtbm-clear" id="rgtbm-clear" title="Tüm yer imlerini sil">🗑</button>
+      </div>
+      <div class="rgtbm-list" id="rgtbm-list"></div>
+      <p class="note" id="rgtbm-note"></p>
+      <div class="rgg-undo" id="rgtbm-undo" hidden>
+        <span id="rgtbm-undo-text">Yer imi silindi.</span>
+        <button class="btn ghost" id="rgtbm-undo-btn">Geri al</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Sayfa düzeni</h2>
+      <label class="row">
+        <span class="txt"><b>Ana sayfada yan yana video</b><small>Otomatik: YouTube düzeni (Zen Mod açıksa 4–6)</small></span>
+        <select data-key="gridCols" data-type="number">
+          <option value="0">Otomatik</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+        </select>
+      </label>
+      <label class="row">
+        <span class="txt"><b>Öneri listesi solda</b><small>Video izlerken sağdaki listeyi sola taşır</small></span>
+        <span class="switch"><input type="checkbox" data-key="sideLeft"><span></span></span>
+      </label>
+      <label class="row">
+        <span class="txt"><b>Üst menüyü alta çek</b><small>Logo, arama çubuğu ve butonlar ekranın altına geçer, videolar yukarı kayar</small></span>
+        <span class="switch"><input type="checkbox" data-key="barBottom"><span></span></span>
+      </label>
+    </section>
+  </main>
+
+  <footer>
+    <button class="btn ghost" id="reset" type="button">Varsayılana dön</button>
+    <span><span id="ver"></span> · Değişiklikler anında uygulanır</span>
+  </footer>
+
+  <script src="../shared/defaults.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

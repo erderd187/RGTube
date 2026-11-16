@@ -1,0 +1,8 @@
+{
+  "name": "rgtube",
+  "version": "2.2.1",
+  "description": "YouTube'u daha akıcı ve pratik yapan tarayıcı eklentisi: Zen Mod, Cleany Menu, Kanal Grupları, yer imleri, arka plan ve sayfa düzeni.",
+  "license": "MIT",
+  "author": "erderd187",
+  "private": true
+}
